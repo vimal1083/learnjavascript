@@ -1,0 +1,94 @@
+<script type="text/javascript">
+	function Human(){
+		this.color = 'black' ;
+		this.hasMoney = 'No';
+	}
+	
+	function Indian(){
+		this.nationality = 'Indian'
+		this.residesAt = 'India'
+		this.canVote = true
+	}
+	
+	function American(){
+		this.nationality = 'American'
+		this.residesAt = 'America'
+		this.canVote = true
+	}
+	
+	Human.prototype.toString = function(){
+		return 'You don have permission to view these details';
+	}
+		
+	Indian.prototype = new Human();
+	American.prototype = new Human();
+	//Indian.prototype.constructor = Indian;
+	//American.prototype.constructor = American;
+	
+	var vimal = new Indian();
+	console.info('--------Vimal starts-----------')	
+	console.log(Object.getPrototypeOf(vimal)) // Human
+	
+	console.log(Human.prototype.isPrototypeOf(vimal)) // true
+	console.log(Indian.prototype.isPrototypeOf(vimal)) // true
+	//alert(vimal) // You don have permission to view these details
+	console.info('--------Vimal ends-----------')	
+	
+	var obama = new American();
+	console.info('--------Obama starts-----------')	
+	console.log(Object.getPrototypeOf(obama)) // Human
+	
+	console.log(Human.prototype.isPrototypeOf(obama)) // true
+	console.log(Indian.prototype.isPrototypeOf(obama)) // false
+	console.log(American.prototype.isPrototypeOf(obama)) // true
+	console.info('--------Obama Ends-----------')	
+	
+	// Assigns to all americans , not to all humans
+	obama.__proto__.hateOsama = true;	
+	// Assigns to all human
+	obama.__proto__.__proto__.canWalk = true;
+	
+	console.log(vimal.hateOsama) // undefined
+	console.log(vimal.canWalk) // true
+	
+	
+	console.info('--------lets play with bind , call and apply -----------')	
+	
+	function IsEligibleToVoteInIndia(errmsg1,errmsg2){
+		if(this.nationality == 'Indian')
+			if(this.canVote === true)
+				return 'Eligible to vote'
+			else
+				return errmsg2;
+		else
+			return errmsg1;
+	}
+	
+	console.info('--------apply -----------')	
+	console.log(IsEligibleToVoteInIndia.apply(vimal,['He is not an Indian','Not eligible to vote'])) // Eligible to vote
+	console.log(IsEligibleToVoteInIndia.apply(obama,['He is not an Indian','Not eligible to vote'])) // He is not an Indian
+	console.info('--------call -----------')	
+	console.log(IsEligibleToVoteInIndia.call(vimal,'He is not an Indian','Not eligible to vote')) // Eligible to vote
+	console.info('--------bind -----------')	
+	// creates a function with scope , can be use it later
+	var tempRun = IsEligibleToVoteInIndia.bind(vimal,'He is not an Indian','Not eligible to vote')
+	console.log(tempRun())
+	
+	
+	
+	
+	
+	
+	
+	// will be continued ...
+	
+	
+	
+	
+	
+	
+	
+</script>
+<body>
+	<div style="margin:0 auto;width:80%;padding:5%;text-align:center;font-size:80px;" >See the console</div>
+</body>
